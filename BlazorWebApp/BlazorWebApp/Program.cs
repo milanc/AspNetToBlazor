@@ -1,8 +1,8 @@
-using BlazorWebApp.Client.Pages;
 using BlazorWebApp.Components;
 using BlazorWebApp.Components.Account;
 using BlazorWebApp.Data;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +65,11 @@ app.UseAntiforgery();
 app.UseAuthorization();
 app.MapDefaultControllerRoute();
 // <<<<<<<<< support yarp and api
+
+app.MapGet("/api/min-values", [Authorize] () =>
+{
+    return new List<string>() { "mv1", "mv2" };
+});
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
