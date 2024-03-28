@@ -5,5 +5,14 @@
         <h2 id="title"><%: Title %>.</h2>
         <h3>Your application description page.</h3>
         <p>Use this area to provide additional information.</p>
+        <button type="button" onclick="showDialog()">Show Radzen Dialog</button>
     </main>
+    <script>
+        async function showDialog() {
+           var result = await BlazorShared.showDialog("BlazorWebApp.Client.Components.SharedComponents.DataEntry", "From About");
+            alert("Result from radzen dialog - " + result);
+        }
+    </script>
+
 </asp:Content>
+

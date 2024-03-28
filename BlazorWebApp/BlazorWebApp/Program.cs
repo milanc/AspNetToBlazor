@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 // support yarp and api >>>>>>>>>
@@ -14,6 +15,8 @@ builder.Services.AddHttpForwarder();
 builder.Services.AddControllers();
 // <<<<<<<<< support yarp and api
 // Add services to the container.
+
+builder.Services.AddRadzenComponents();
 
 // support sharing authentication cookie (and any other encrypted data) >>>>>>>>>>>>>>>
 builder.Services.AddDataProtection(c =>

@@ -17,16 +17,33 @@
     <script>
         document.blazorBase = "<%:BlazorBase %>";
     </script>
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
     <script src="/blazor.webassembly-asp.js"></script>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
     <link rel="stylesheet" href="BlazorWebApp.styles.css">
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/standard-base.css">
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <script>
+        class BlazorShared {
+            static dotNetReference;
+            static setDotNetReference(ref) {
+                this.dotNetReference = ref;
+            }
+
+            static async showDialog(component, title, options) {
+                return this.dotNetReference.invokeMethodAsync("ShowDialog", component, title, options)
+            }
+        }
+
+        window.BlazorShared = BlazorShared;
+    </script>
 </head>
 <body>
+    <shared-comps id="shc" is-in-legacy="true"></shared-comps>
     <form runat="server">
         <asp:ScriptManager runat="server">
             <Scripts>

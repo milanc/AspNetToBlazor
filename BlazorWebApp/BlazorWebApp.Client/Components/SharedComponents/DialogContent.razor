@@ -1,0 +1,8 @@
+﻿@inject Radzen.DialogService dialogService
+<DynamicComponent Type="ContentComponentType"></DynamicComponent>
+@code {
+    [Parameter]
+    public string? ContentComponent { get; set; }
+
+    public Type ContentComponentType => Type.GetType(ContentComponent);
+}

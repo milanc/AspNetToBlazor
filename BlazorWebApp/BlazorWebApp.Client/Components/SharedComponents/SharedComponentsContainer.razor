@@ -1,0 +1,49 @@
+﻿@inject DialogService DialogService
+@inject IJSRuntime jsRuntime
+@implements IDisposable
+<RadzenComponents />
+@code {
+    [Parameter]
+    public bool IsInLegacy { get; set; }
+
+    private DotNetObjectReference<SharedComponentsContainer> netReference;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        netReference = DotNetObjectReference.Create(this);
+    }
+
+
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender && IsInLegacy)
+        {
+            jsRuntime.InvokeVoidAsync("BlazorShared.setDotNetReference", netReference);
+        }
+    }
+
+
+    [JSInvokable]
+    public async Task<dynamic> ShowDialog(string dialogContentComponent, string title, DialogOptions dialogOptions = null)
+    {
+        if (dialogOptions == null)
+        {
+            dialogOptions = new DialogOptions() { Resizable = true, Draggable = true, };
+        }
+
+        var result = await DialogService.OpenAsync<DialogContent>(title,
+              new Dictionary<string, object>() { { "ContentComponent", dialogContentComponent } }
+              , dialogOptions
+              );
+
+        return result;
+    }
+
+    public void Dispose()
+    {
+        this.netReference?.Dispose();
+    }
+}
