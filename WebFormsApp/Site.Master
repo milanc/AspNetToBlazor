@@ -17,8 +17,8 @@
     <script>
         document.blazorBase = "<%:BlazorBase %>";
     </script>
-    <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
-    <script src="/blazor.webassembly-asp.js"></script>
+    <script src="/_content/Radzen.Blazor/Radzen.Blazor.js" defer></script>
+    <script src="/blazor.webassembly-asp.js" defer></script>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
