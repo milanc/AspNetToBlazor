@@ -1,7 +1,7 @@
-﻿@implements IDisposable
-
+﻿@using System.Security.Principal
+@implements IDisposable
 @inject NavigationManager NavigationManager
-
+@inject AuthenticationStateProvider provider;
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">BlazorWebApp</a>
@@ -77,7 +77,7 @@
                 </div>
                 <div class="nav-item px-3">
                     <a class="nav-link" href="/logout">
-                            <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+                        <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
                     </a>
                 </div>
             }
@@ -98,14 +98,18 @@
         else
         {
             // Seems that authorize view does not work in legacy environment might need to use custom logic to replace it's features
-            <AuthorizeView>
-                <Authorized>
-                    <div class="nav-item px-3">
-                        <a class="nav-link" href="Account/Manage">
-                            <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
-                        </a>
-                    </div>
-                    <div class="nav-item px-3">
+
+            @if (Username != null)
+            {
+                <div class="nav-item px-3">
+                    <a class="nav-link" href="/Account/Manage">
+                        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @Username
+                    </a>
+                </div>
+
+                <div class="nav-item px-3">
+                    @if (Identity != null && Identity.IsAuthenticated)
+                    {
                         <form action="Account/Logout" method="post">
                             <AntiforgeryToken />
                             <input type="hidden" name="ReturnUrl" value="@currentUrl" />
@@ -113,21 +117,29 @@
                                 <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
                             </button>
                         </form>
-                    </div>
-                </Authorized>
-                <NotAuthorized>
-                    <div class="nav-item px-3">
-                        <a class="nav-link" href="Account/Register">
-                            <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
+                    }
+                    else
+                    {
+                        // Skip complexity of sharing Antiforgery, redirect to login page which has auto logout on it
+                        <a class="nav-link" href="/logout">
+                            <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
                         </a>
-                    </div>
-                    <div class="nav-item px-3">
-                        <a class="nav-link" href="Account/Login">
-                            <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
-                        </a>
-                    </div>
-                </NotAuthorized>
-            </AuthorizeView>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="nav-item px-3">
+                    <a class="nav-link" href="/Account/Register">
+                        <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
+                    </a>
+                </div>
+                <div class="nav-item px-3">
+                    <a class="nav-link" href="/Account/Login">
+                        <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
+                    </a>
+                </div>
+            }
         }
 
     </nav>
@@ -137,17 +149,24 @@
     [Parameter]
     public bool IsLegacyPrerender { get; set; }
 
+    public bool IsLegacy { get; set; }
+
     [Parameter]
-    public string Username { get; set; } = "";
+    public string? Username { get; set; }
+
+    private IIdentity? Identity;
 
     private string? currentUrl;
 
-    protected override void OnInitialized()
+
+    protected async override Task OnInitializedAsync()
     {
         if (IsLegacyPrerender)
         {
             return;
         }
+        Identity = (await provider.GetAuthenticationStateAsync())?.User?.Identity;
+        Username ??= Identity?.Name;
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
     }

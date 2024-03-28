@@ -17,7 +17,7 @@
         "applicationUrl": "http://localhost:5015",
         "environmentVariables": {
            "ASPNETCORE_ENVIRONMENT": "Development",
-           "ProxyTo": "http://localhost:62957"
+           "ProxyTo": "http://localhost:5000"
         }
       },
       "IIS Express": {
