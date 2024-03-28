@@ -9,6 +9,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
 
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+
 var builder = WebApplication.CreateBuilder(args);
 // support yarp and api >>>>>>>>>
 builder.Services.AddHttpForwarder();
@@ -17,6 +22,69 @@ builder.Services.AddControllers();
 // Add services to the container.
 
 builder.Services.AddRadzenComponents();
+
+// support OTEL >>>>>>>>>>>>>>>
+var otel = builder.Services.AddOpenTelemetry();
+var tracingOtlpEndpoint = "http://localhost:4317/";
+//const string serviceName = "yarpProxy";
+string serviceName = builder.Environment.ApplicationName;
+builder.Logging.AddOpenTelemetry(options =>
+{
+    options
+        .SetResourceBuilder(
+            ResourceBuilder.CreateDefault()
+                .AddService(serviceName)).AddOtlpExporter(otlpOptions =>
+                {
+                    otlpOptions.Endpoint = new Uri(tracingOtlpEndpoint);
+                });
+});
+
+// Configure OpenTelemetry Resources with the application name
+otel.ConfigureResource(resource => resource
+    .AddService(serviceName: builder.Environment.ApplicationName));
+
+otel.ConfigureResource(resource => resource
+    .AddService(serviceName));
+// Add Metrics for ASP.NET Core and our custom metrics and export to Prometheus
+
+otel.WithMetrics(metrics => metrics
+    // Metrics provider from OpenTelemetry
+    .AddAspNetCoreInstrumentation()
+    //.AddMeter(greeterMeter.Name)
+    // Metrics provides by ASP.NET Core in .NET 8
+    .AddView("http.server.request.duration",
+            new ExplicitBucketHistogramConfiguration
+            {
+                Boundaries = new double[] { 0, 0.005, 0.01, 0.025, 0.05,
+                       0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10 }
+            })
+    .AddPrometheusExporter(c =>
+    {
+        c.ScrapeEndpointPath = "/mymet";
+    }));
+
+
+
+otel.WithTracing(tracing =>
+{
+    tracing.AddAspNetCoreInstrumentation();
+    tracing.AddHttpClientInstrumentation();
+    tracing.AddSource("Yarp.ReverseProxy");
+    //tracing.AddSource(greeterActivitySource.Name);
+    if (tracingOtlpEndpoint != null)
+    {
+        tracing.AddOtlpExporter(otlpOptions =>
+        {
+            otlpOptions.Endpoint = new Uri(tracingOtlpEndpoint);
+        });
+    }
+    else
+    {
+        tracing.AddConsoleExporter();
+    }
+});
+// <<<<<<<<<< support OTEL
+
 
 // support sharing authentication cookie (and any other encrypted data) >>>>>>>>>>>>>>>
 builder.Services.AddDataProtection(c =>
@@ -66,6 +134,12 @@ else
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
+
+
+// support OTEL >>>>>>>>>>>>>>>
+app.MapPrometheusScrapingEndpoint();
+// <<<<<<<<<<<<< support OTEL
+
 
 app.UseStaticFiles();
 // support yarp and api >>>>>>>>>
