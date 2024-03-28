@@ -4,7 +4,7 @@
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">BlazorWebApp</a>
+        <a class="navbar-brand" href="/">BlazorWebApp</a>
     </div>
 </div>
 
@@ -13,80 +13,83 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <a class="nav-link" href="" Match="NavLinkMatch.All">
+            <a class="nav-link" href="/" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
             </a>
         </div>
 
         <div class="nav-item px-3">
-            <a class="nav-link" href="counter">
+            <a class="nav-link" href="/counter">
                 <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
             </a>
         </div>
 
         <div class="nav-item px-3">
-            <a class="nav-link" href="weather">
+            <a class="nav-link" href="/weather">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
             </a>
         </div>
 
         <div class="nav-item px-3">
-            <a class="nav-link" href="about">
+            <a class="nav-link" href="/about">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Web Forms About
             </a>
         </div>
 
         <div class="nav-item px-3">
-            <a class="nav-link" href="contact">
+            <a class="nav-link" href="/contact">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Web Forms Contact
             </a>
         </div>
 
         <div class="nav-item px-3">
-            <a class="nav-link" href="auth">
+            <a class="nav-link" href="/user/info">
+                <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Web Forms - Issues
+            </a>
+        </div>
+
+        <div class="nav-item px-3">
+            <a class="nav-link" href="/auth">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
             </a>
         </div>
 
         <div class="nav-item px-3">
-            <a class="nav-link" href="api/values">
+            <a class="nav-link" href="/api/values">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required Api
             </a>
         </div>
 
         <div class="nav-item px-3">
-            <a class="nav-link" href="api/min-values">
+            <a class="nav-link" href="/api/min-values">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required Min Api
             </a>
         </div>
         @if (IsLegacyPrerender)
         {
-            // TODO: figure out if authorize view could work
-            // this will be visible just for a short time and having just a static placeholder should be enough 
+            // "legacy prerender" will be visible just for a short time and having just a static placeholder should be enough
             if (Username != null)
             {
                 <div class="nav-item px-3">
-                    <a class="nav-link" href="Account/Manage">
+                    <a class="nav-link" href="/Account/Manage">
                         <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @Username
                     </a>
                 </div>
                 <div class="nav-item px-3">
-                    <form action="Account/Logout" method="post">
-                        <button type="button" class="nav-link">
+                    <a class="nav-link" href="/logout">
                             <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
-                        </button>
-                    </form>
+                    </a>
                 </div>
             }
             else
             {
                 <div class="nav-item px-3">
-                    <a class="nav-link" href="Account/Register">
+                    <a class="nav-link" href="/Account/Register">
                         <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
                     </a>
                 </div>
                 <div class="nav-item px-3">
-                    <a class="nav-link" href="Account/Login">
+                    <a class="nav-link" href="/Account/Login">
                         <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
                     </a>
                 </div>
