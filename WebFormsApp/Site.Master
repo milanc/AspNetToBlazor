@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %> - My ASP.NET Application</title>
-    
+
     <%--
     base href which is required for blazor is messing up relative links
     <base href="/" />
@@ -15,10 +15,9 @@
     --%>
     <%-- Set blazorBase to "/" and load tweaked blazor.webassembly --%>
     <script>
-        document.blazorBase = "<%: Request.Url.AbsoluteUri.Replace(Request.Url.AbsolutePath,"/") %>";
-        //document.blazorBase = "/";
+        document.blazorBase = "<%:BlazorBase %>";
     </script>
-    <script src="/blazor.webassembly-asp.js" autostart="false" ></script>
+    <script src="/blazor.webassembly-asp.js"></script>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
@@ -50,7 +49,7 @@
         <div style="display: flex">
             <div class="sidebar">
 
-                <nav-menu username="<%= Page.User.Identity.Name %>">
+                <nav-menu is-legacy="true" username="<%= Page.User.Identity.Name %>">
                     <div id="placeholder"></div>
                 </nav-menu>
                 <script>
