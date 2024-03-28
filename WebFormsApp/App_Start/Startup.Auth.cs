@@ -28,13 +28,6 @@ namespace WebFormsApp
                     {
                         // TODO: At this point we can validate identity received in the cookie 
                         var identity = c.Identity;
-                    },
-                    OnApplyRedirect = async (c) =>
-                    {
-                        // TODO: There might be config within yarp to fix redirection to legacy app host
-                        // or maybe use the middleware to set the host header to proxy host name
-                        c.RedirectUri = c.RedirectUri.Replace(c.Request.Host.Value, c.Request.Headers["X-Forwarded-Host"]);
-                        c.Response.Redirect(c.RedirectUri);
                     }
                 },
 
