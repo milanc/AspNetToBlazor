@@ -4,6 +4,7 @@ using BlazorWebApp.Data;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,15 @@ builder.Services.AddHttpForwarder();
 builder.Services.AddControllers();
 // <<<<<<<<< support yarp and api
 // Add services to the container.
+
+// support sharing authentication cookie (and any other encrypted data) >>>>>>>>>>>>>>>
+builder.Services.AddDataProtection(c =>
+{
+    c.ApplicationDiscriminator = "blazor";
+
+}).PersistKeysToFileSystem(new DirectoryInfo("c:\\blazor-dpk"));
+// <<<<<<<<<<<<<<< support sharing authentication cookie (and any other encrypted data)
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
