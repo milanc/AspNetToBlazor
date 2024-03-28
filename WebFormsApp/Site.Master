@@ -39,7 +39,16 @@
         </asp:ScriptManager>
         <div style="display: flex">
             <div class="sidebar">
-                <nav-menu></nav-menu>
+                <nav-menu>
+                    <div id="placeholder"></div>
+                </nav-menu>
+                <script>
+                    // preload html to avoid flickering
+                    // use query string for cache busting(reload on the new session, last updated date of user setings ...)
+                    // this qs parameter does not have to be handled by api endpoint (which actually could accept some other params)
+                    // if menu can have two states (expanded/collapsed) use qs or have two endpoints (menu and menu-expanded)
+                    $("#placeholder").load("/api/BlazorPrerender/menu");
+                </script>
             </div>
             <div class="container body-content">
                 <asp:ContentPlaceHolder ID="MainContent" runat="server">

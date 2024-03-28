@@ -13,103 +13,158 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <a class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
+            </a>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
+            <a class="nav-link" href="counter">
                 <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
+            </a>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
+            <a class="nav-link" href="weather">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-
-         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="about">
-                <span class="bi bi-list-lock-nav-menu" aria-hidden="true"></span> Web Forms About
-            </NavLink>
-        </div>
-
-         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="contact">
-                <span class="bi bi-list-lock-nav-menu" aria-hidden="true"></span> Web Forms Contact
-            </NavLink>
+            </a>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="auth">
+            <a class="nav-link" href="about">
+                <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Web Forms About
+            </a>
+        </div>
+
+        <div class="nav-item px-3">
+            <a class="nav-link" href="contact">
+                <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Web Forms Contact
+            </a>
+        </div>
+
+        <div class="nav-item px-3">
+            <a class="nav-link" href="auth">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
-            </NavLink>
+            </a>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="api/values">
+            <a class="nav-link" href="api/values">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required Api
-            </NavLink>
+            </a>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="api/min-values">
+            <a class="nav-link" href="api/min-values">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required Min Api
-            </NavLink>
+            </a>
         </div>
-
-        <AuthorizeView>
-            <Authorized>
+        @if (IsLegacyPrerender)
+        {
+            // TODO: figure out if authorize view could work
+            // this will be visible just for a short time and having just a static placeholder should be enough 
+            if (Username != null)
+            {
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Manage">
-                        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
-                    </NavLink>
+                    <a class="nav-link" href="Account/Manage">
+                        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @Username
+                    </a>
                 </div>
                 <div class="nav-item px-3">
                     <form action="Account/Logout" method="post">
-                        <AntiforgeryToken />
-                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                        <button type="submit" class="nav-link">
+                        <button type="button" class="nav-link">
                             <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
                         </button>
                     </form>
                 </div>
-            </Authorized>
-            <NotAuthorized>
+            }
+            else
+            {
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Register">
+                    <a class="nav-link" href="Account/Register">
                         <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
-                    </NavLink>
+                    </a>
                 </div>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Account/Login">
+                    <a class="nav-link" href="Account/Login">
                         <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
-                    </NavLink>
+                    </a>
                 </div>
-            </NotAuthorized>
-        </AuthorizeView>
+            }
+        }
+        else
+        {
+            // Seems that authorize view does not work in legacy environment might need to use custom logic to replace it's features
+            <AuthorizeView>
+                <Authorized>
+                    <div class="nav-item px-3">
+                        <a class="nav-link" href="Account/Manage">
+                            <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
+                        </a>
+                    </div>
+                    <div class="nav-item px-3">
+                        <form action="Account/Logout" method="post">
+                            <AntiforgeryToken />
+                            <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                            <button type="submit" class="nav-link">
+                                <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+                            </button>
+                        </form>
+                    </div>
+                </Authorized>
+                <NotAuthorized>
+                    <div class="nav-item px-3">
+                        <a class="nav-link" href="Account/Register">
+                            <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
+                        </a>
+                    </div>
+                    <div class="nav-item px-3">
+                        <a class="nav-link" href="Account/Login">
+                            <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
+                        </a>
+                    </div>
+                </NotAuthorized>
+            </AuthorizeView>
+        }
+
     </nav>
 </div>
 
 @code {
+    [Parameter]
+    public bool IsLegacyPrerender { get; set; }
+
+    [Parameter]
+    public string Username { get; set; } = "";
+
     private string? currentUrl;
 
     protected override void OnInitialized()
     {
+        if (IsLegacyPrerender)
+        {
+            return;
+        }
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
+        if (IsLegacyPrerender)
+        {
+            return;
+        }
         currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
         StateHasChanged();
     }
 
     public void Dispose()
     {
+        if (IsLegacyPrerender)
+        {
+            return;
+        }
         NavigationManager.LocationChanged -= OnLocationChanged;
     }
 }

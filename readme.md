@@ -47,3 +47,9 @@ builder.Services.AddDataProtection(c =>
     c.ApplicationDiscriminator = "blazor";
 }).PersistKeysToFileSystem(new DirectoryInfo("c:\\blazor-dpk"))
 ```
+
+Added api controller to render navigation ui to serve as a placeholder while the custom element is rendered on the page.
+NavMenu control can't be rendered without Blazor context so replaced those with `a` tags.
+Other issues can be solved with `IsLegacyPrerender` parameter check and conditional rendering.
+TODO: Consider having two sections for placeholder and regular navigation so we can use NavItem control.
+      
