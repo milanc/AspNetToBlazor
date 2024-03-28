@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
+// support yarp and api >>>>>>>>>
+builder.Services.AddHttpForwarder();
+builder.Services.AddControllers();
+// <<<<<<<<< support yarp and api
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
@@ -52,7 +55,16 @@ else
 }
 
 app.UseStaticFiles();
+// support yarp and api >>>>>>>>>
+// seems that routing breaks hot reload
+app.UseRouting();
+// <<<<<<<<< support yarp and api
 app.UseAntiforgery();
+
+// support yarp and api >>>>>>>>>
+app.UseAuthorization();
+app.MapDefaultControllerRoute();
+// <<<<<<<<< support yarp and api
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
@@ -61,5 +73,9 @@ app.MapRazorComponents<App>()
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
+
+// support yarp and api >>>>>>>>>
+app.MapForwarder("/{**catch-all}", app.Configuration["ProxyTo"]).Add(static builder => ((RouteEndpointBuilder)builder).Order = int.MaxValue);
+// <<<<<<<<< support yarp and api
 
 app.Run();
