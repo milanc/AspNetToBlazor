@@ -114,3 +114,12 @@ async function showDialog() {
     alert("Result from radzen dialog - " + result);
 }
 ```
+
+## Get Started
+1. Clone the repo.  
+1. Setup multiple startup projects.  
+![alt text](images/multiple-startup-projects.png)  
+
+1. Set up the WebForms to start without opening the browser.   
+   ![web forms startup](images/web-form-startup.png)
+   Other option is to setup the WebForms app to *Start without debugging* instead of *Start* in the step #2.  
