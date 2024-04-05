@@ -63,11 +63,9 @@ Following customizations are done to support sharing of the NavMenu component
 1. NavMenu component is moved to the client project
    1. Added `IsLegacy` and `IsLegacyPrerender` properties to manage the rendering and functionality outside of the Blazor context.
 1. Relative links in the NavMenu replaced with the absolute to fix the navigation from the legacy app pages nested under sub paths
-1. Tweaked the `blazor.webassembly.js` script to use global `blazorBase` variable instead of `document.baseURI`
+1. Tweaked the `blazor.webassembly.js` script to use global `blazorBase` variable instead of `document.baseURI` (**there should be better solution for this**)
    1. This was done to mitigate the issue with the fact that Blazor loads framework files relative to the `base` tag,  
       and adding the `base` tag to the legacy application, so that Blazor can load framework files for custom elements, messes the form posts and relative links in pages nested under sub paths
-1. NavLink component can't be rendered without Blazor context so it is replaced with `a` tags to allow "prerendering"
-   1. We also could have entirely new section used just for "prerendering", so we keep NavLink, but for larger menu it might be too much of markup duplication.  
 1. Added legacy specific Logout link that redirects to Login page
    1. This was done to avoid complexity of supporting antiforgery tokens from the legacy app
    1. Login page on load executes script that posts to Logout page.  
@@ -75,6 +73,7 @@ Following customizations are done to support sharing of the NavMenu component
    1. This endpoint uses the .net8+ feature to [render blazor outside of asp.net core](https://learn.microsoft.com/en-us/aspnet/core/blazor/components/render-components-outside-of-aspnetcore)  
    1. If menu can be collapsed consider exposing the another endpoint e.g `menu-collapsed` to prerender collapsed menu.
    1. These endpoints have cache attribute making them cacheable on the client to allow faster loading and reduce flickering when switching between wf and Blazor apps
+   1. NavLink component depends on NavigationManager so in order to "prerendering for legacy" to work, `FakeServiceProvider` with `FakeNavigationManager` is pushed to the `HtmlRenderer`.
 
 ### Legacy App
 1. Added reference to blazor css and updated `blazor.webassembly-asp.js` file
@@ -108,10 +107,10 @@ In this folder we also have `DataEntry` component that is displayed inside the D
 
 Using JavaScript Interop feature we can call show dialog by passing the component full type name (including namespace).
 If we decide to put all components in the same folder then we could simplify calls so that we need only the component name.
-```
+```javascript
 async function showDialog() {
     var result = await BlazorShared.showDialog("BlazorWebApp.Client.Components.SharedComponents.DataEntry", "From About");
-    alert("Result from radzen dialog - " + result);
+    BlazorShared.showNotification(1, "Response from dialog", result); // Exposed radzen notification service too
 }
 ```
 
