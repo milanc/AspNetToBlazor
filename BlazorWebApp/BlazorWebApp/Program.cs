@@ -1,3 +1,4 @@
+#define NEED_HOT_RELOAD
 using BlazorWebApp.Components;
 using BlazorWebApp.Components.Account;
 using BlazorWebApp.Data;
@@ -10,11 +11,14 @@ using Microsoft.EntityFrameworkCore;
 using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
+// Add services to the container.
+
+#if !NEED_HOT_RELOAD
 // support yarp and api >>>>>>>>>
 builder.Services.AddHttpForwarder();
 builder.Services.AddControllers();
 // <<<<<<<<< support yarp and api
-// Add services to the container.
+#endif
 
 builder.Services.AddRadzenComponents();
 
@@ -68,15 +72,19 @@ else
 }
 
 app.UseStaticFiles();
+#if !NEED_HOT_RELOAD
 // support yarp and api >>>>>>>>>
 // seems that routing breaks hot reload
 app.UseRouting();
 // <<<<<<<<< support yarp and api
+#endif
 app.UseAntiforgery();
 
 // support yarp and api >>>>>>>>>
 app.UseAuthorization();
+#if !NEED_HOT_RELOAD
 app.MapDefaultControllerRoute();
+#endif
 // <<<<<<<<< support yarp and api
 
 app.MapGet("/api/min-values", [Authorize] () =>
@@ -91,9 +99,9 @@ app.MapRazorComponents<App>()
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
-
+#if !NEED_HOT_RELOAD
 // support yarp and api >>>>>>>>>
 app.MapForwarder("/{**catch-all}", app.Configuration["ProxyTo"]).Add(static builder => ((RouteEndpointBuilder)builder).Order = int.MaxValue);
 // <<<<<<<<< support yarp and api
-
+#endif
 app.Run();

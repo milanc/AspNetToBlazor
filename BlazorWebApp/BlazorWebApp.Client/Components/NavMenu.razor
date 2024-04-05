@@ -11,8 +11,25 @@
 <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <RadzenPanelMenu>
+        <RadzenPanelMenuItem Text="Blazor Pages" Icon="home">
+            <RadzenPanelMenuItem Attributes="@(new Dictionary<string,object>(){{"data-enhance-nav",!IsLegacy}})" Text="Home" Path="/" Icon="account_circle"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Attributes="@(new Dictionary<string,object>(){{"data-enhance-nav",!IsLegacy}})" Text="Counter" Path="/counter" Icon="attach_file"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Attributes="@(new Dictionary<string,object>(){{"data-enhance-nav",!IsLegacy}})" Text="Weather" Path="/weather" Icon="line_weight"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Attributes="@(new Dictionary<string,object>(){{"data-enhance-nav",!IsLegacy}})" Text="Auth Required" Path="/auth" Icon="line_weight"></RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="WebForms Pages" Icon="home">
+            <RadzenPanelMenuItem Attributes="@(new Dictionary<string,object>(){{"data-enhance-nav","false"}})" Text="About" Path="/about" Icon="account_circle"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Attributes="@(new Dictionary<string,object>(){{"data-enhance-nav","false"}})" Text="Contact" Path="/contact" Icon="attach_file"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Attributes="@(new Dictionary<string,object>(){{"data-enhance-nav","false"}})" Text="Nav Issues" Path="/info" Icon="line_weight"></RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Text="API Requests" Icon="home">
+            <RadzenPanelMenuItem Attributes="@(new Dictionary<string,object>(){{"data-enhance-nav","false"}})" Text="Auth Required Api" Path="/api/values" Icon="account_circle"></RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Attributes="@(new Dictionary<string,object>(){{"data-enhance-nav","false"}})" Text="Auth Required Min Api" Path="/api/min-values" Icon="attach_file"></RadzenPanelMenuItem>
+        </RadzenPanelMenuItem>
+    </RadzenPanelMenu>
     <nav class="flex-column">
-        <div class="nav-item px-3">
+        @* <div class="nav-item px-3">
             <NavLink data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
             </NavLink>
@@ -64,7 +81,7 @@
             <NavLink data-enhance-nav="false" class="nav-link" href="/api/min-values">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required Min Api
             </NavLink>
-        </div>
+        </div> *@
         @if (IsLegacyPrerender)
         {
             // "legacy prerender" will be visible just for a short time and having just a static placeholder should be enough
