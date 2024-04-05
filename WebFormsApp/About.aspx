@@ -9,8 +9,8 @@
     </main>
     <script>
         async function showDialog() {
-           var result = await BlazorShared.showDialog("BlazorWebApp.Client.Components.SharedComponents.DataEntry", "From About");
-            alert("Result from radzen dialog - " + result);
+            var result = await BlazorShared.showDialog("BlazorWebApp.Client.Components.SharedComponents.DataEntry", "From About");
+            BlazorShared.showNotification(1, "Response from dialog", result);
         }
     </script>
 

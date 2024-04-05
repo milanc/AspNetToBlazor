@@ -37,6 +37,10 @@
             static async showDialog(component, title, options) {
                 return this.dotNetReference.invokeMethodAsync("ShowDialog", component, title, options)
             }
+
+            static async showNotification(severity, summary, details, duration) {
+                return this.dotNetReference.invokeMethodAsync("ShowNotification", severity, summary, details, duration || 5000)
+            }
         }
 
         window.BlazorShared = BlazorShared;

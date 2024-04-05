@@ -1,4 +1,5 @@
 ﻿@inject DialogService DialogService
+@inject NotificationService NotificationService
 @inject IJSRuntime jsRuntime
 @implements IDisposable
 <RadzenComponents />
@@ -40,6 +41,13 @@
               );
 
         return result;
+    }
+
+    [JSInvokable]
+    public Task ShowNotification(NotificationSeverity severity, string summary, string detail, double? duration = 5000)
+    {
+        this.NotificationService.Notify(severity, summary, detail, duration!.Value);
+        return Task.CompletedTask;
     }
 
     public void Dispose()
