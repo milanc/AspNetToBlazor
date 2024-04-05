@@ -1,10 +1,17 @@
 ﻿@inject DialogService dialogService
 
 <div Class="rz-p-0 rz-p-md-12">
+    <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Stretch" Gap="0.5rem" Class="rz-p-4 rz-mb-6 rz-border-radius-1" Style="border: var(--rz-grid-cell-border);">
+        <RadzenFormField Text="Dialog Result" Variant="@variant">
+            <RadzenTextBox @bind-Value="@dialogResult" />
+        </RadzenFormField>
+    </RadzenStack>
+
     <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.5rem" Class="rz-p-4 rz-mb-6 rz-border-radius-1" Style="border: var(--rz-grid-cell-border);">
         <RadzenLabel Text="Variant:" />
         <RadzenSelectBar @bind-Value="@variant" TextProperty="Text" ValueProperty="Value" Data="@(Enum.GetValues(typeof(Variant)).Cast<Variant>().Select(t => new { Text = $"{t}", Value = t }))" Size="ButtonSize.Small" Class="rz-display-none rz-display-xl-flex" />
         <RadzenDropDown @bind-Value="@variant" TextProperty="Text" ValueProperty="Value" Data="@(Enum.GetValues(typeof(Variant)).Cast<Variant>().Select(t => new { Text = $"{t}", Value = t }))" Class="rz-display-inline-flex rz-display-xl-none" />
+
     </RadzenStack>
     <RadzenRow Gap="1rem">
         <RadzenColumn Size="12" SizeSM="6">
@@ -55,7 +62,7 @@
 
 @code {
     Variant variant = Variant.Outlined;
-
+    string? dialogResult = null;
     string value = "Text";
     int intValue = 123;
     int radioButtonValue = 1;
@@ -73,7 +80,7 @@
 
     protected void OkClick()
     {
-        this.dialogService.Close(value);
+        this.dialogService.Close(dialogResult);
     }
 
     protected void CancelClick()

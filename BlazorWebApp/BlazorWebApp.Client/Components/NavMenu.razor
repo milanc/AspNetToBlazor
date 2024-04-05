@@ -13,57 +13,57 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <a data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/" Match="NavLinkMatch.All">
+            <NavLink data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </a>
+            </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <a data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/counter">
+            <NavLink data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/counter">
                 <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </a>
+            </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <a data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/weather">
+            <NavLink data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/weather">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </a>
+            </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <a data-enhance-nav="false" class="nav-link" href="/about">
+            <NavLink data-enhance-nav="false" class="nav-link" href="/about">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Web Forms About
-            </a>
+            </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <a data-enhance-nav="false" class="nav-link" href="/contact">
+            <NavLink data-enhance-nav="false" class="nav-link" href="/contact">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Web Forms Contact
-            </a>
+            </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <a data-enhance-nav="false" class="nav-link" href="/user/info">
+            <NavLink data-enhance-nav="false" class="nav-link" href="/user/info">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Web Forms - Issues
-            </a>
+            </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <a data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/auth">
+            <NavLink data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/auth">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
-            </a>
+            </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <a data-enhance-nav="false" class="nav-link" href="/api/values">
+            <NavLink data-enhance-nav="false" class="nav-link" href="/api/values">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required Api
-            </a>
+            </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <a data-enhance-nav="false" class="nav-link" href="/api/min-values">
+            <NavLink data-enhance-nav="false" class="nav-link" href="/api/min-values">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required Min Api
-            </a>
+            </NavLink>
         </div>
         @if (IsLegacyPrerender)
         {
@@ -71,27 +71,27 @@
             if (Username != null)
             {
                 <div class="nav-item px-3">
-                    <a data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/Account/Manage">
+                    <NavLink data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/Account/Manage">
                         <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @Username
-                    </a>
+                    </NavLink>
                 </div>
                 <div class="nav-item px-3">
-                    <a data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/logout">
+                    <NavLink data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/logout">
                         <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
-                    </a>
+                    </NavLink>
                 </div>
             }
             else
             {
                 <div class="nav-item px-3">
-                    <a data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/Account/Register">
+                    <NavLink data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/Account/Register">
                         <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
-                    </a>
+                    </NavLink>
                 </div>
                 <div class="nav-item px-3">
-                    <a data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/Account/Login">
+                    <NavLink data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/Account/Login">
                         <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
-                    </a>
+                    </NavLink>
                 </div>
             }
         }
@@ -102,9 +102,9 @@
             @if (Username != null)
             {
                 <div class="nav-item px-3">
-                    <a data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/Account/Manage">
+                    <NavLink data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/Account/Manage">
                         <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @Username
-                    </a>
+                    </NavLink>
                 </div>
 
                 <div class="nav-item px-3">
@@ -121,23 +121,23 @@
                     else
                     {
                         // Skip complexity of sharing Antiforgery, redirect to login page which has auto logout on it
-                        <a data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/logout">
+                        <NavLink data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/logout">
                             <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
-                        </a>
+                        </NavLink>
                     }
                 </div>
             }
             else
             {
                 <div class="nav-item px-3">
-                    <a data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/Account/Register">
+                    <NavLink data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/Account/Register">
                         <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
-                    </a>
+                    </NavLink>
                 </div>
                 <div class="nav-item px-3">
-                    <a data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/Account/Login">
+                    <NavLink data-enhance-nav="@((!IsLegacy).ToString())" class="nav-link" href="/Account/Login">
                         <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
-                    </a>
+                    </NavLink>
                 </div>
             }
         }

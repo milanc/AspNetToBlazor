@@ -14,7 +14,8 @@ namespace BlazorWebApp.Controllers
 
         public BlazorPrerenderController(IServiceProvider sp, ILoggerFactory lf)
         {
-            this.renderer = new HtmlRenderer(sp, lf);
+            var fakeSP = new FakeServiceProvider(sp);
+            this.renderer = new HtmlRenderer(fakeSP, lf);
         }
 
         // enable caching in browser to reduce flicker
@@ -36,6 +37,33 @@ namespace BlazorWebApp.Controllers
             });
 
             return html;
+        }
+    }
+
+    public class FakeNavigationManager : NavigationManager
+    {
+        public FakeNavigationManager(string uri)
+        {
+            Initialize("http://localhost/", uri);
+        }
+
+        protected override void NavigateToCore(string uri, bool forceLoad)
+        {
+        }
+    }
+
+
+    public class FakeServiceProvider (IServiceProvider serviceProvider): IServiceProvider
+    {
+
+        public object? GetService(Type serviceType)
+        {
+            if (serviceType == typeof(NavigationManager))
+            {
+                return new FakeNavigationManager("http://localhost/test");
+            }
+
+            return serviceProvider.GetService(serviceType);
         }
     }
 }
