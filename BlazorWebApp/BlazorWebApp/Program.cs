@@ -1,4 +1,4 @@
-#define NEED_HOT_RELOAD
+//#define NEED_HOT_RELOAD
 using BlazorWebApp.Components;
 using BlazorWebApp.Components.Account;
 using BlazorWebApp.Data;
