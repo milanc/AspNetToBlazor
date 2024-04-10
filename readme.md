@@ -63,9 +63,22 @@ Following customizations are done to support sharing of the NavMenu component
 1. NavMenu component is moved to the client project
    1. Added `IsLegacy` and `IsLegacyPrerender` properties to manage the rendering and functionality outside of the Blazor context.
 1. Relative links in the NavMenu replaced with the absolute to fix the navigation from the legacy app pages nested under sub paths
-1. Tweaked the `blazor.webassembly.js` script to use global `blazorBase` variable instead of `document.baseURI` (**there should be better solution for this**)
+1. Tweaked the `blazor.webassembly.js` script [(source)](https://github.com/dotnet/aspnetcore/blob/8e90749191a928015cb239c721e89bf628b8d53a/src/Components/Web.JS/src/JSInitializers/JSInitializers.ts#L48) to use global `blazorBase` variable instead of `document.baseURI` (**there should be better solution for this**)
    1. This was done to mitigate the issue with the fact that Blazor loads framework files relative to the `base` tag,  
       and adding the `base` tag to the legacy application, so that Blazor can load framework files for custom elements, messes the form posts and relative links in pages nested under sub paths
+1. Tweaked the `dotnet.js` script [(source)](https://github.com/dotnet/runtime/blob/85e8f688ffaf02743da29adff95e98ebd22a6f53/src/mono/browser/runtime/loader/assetsCache.ts#L165) to use global `blazorBase` variable instead of `document.baseURI` to fix caching for each page in WebForms app  (**there should be better solution for this**)
+   ```
+   Blazor.start({
+        loadBootResource: function (type, name, defaultUri, integrity) {
+            console.log(defaultUri)
+            if (name == 'dotnet.js') {
+                return "/dotnet-asp.js"
+            } else {
+                return `/_framework/${name}`;
+            }
+        }
+    });
+   ``` 
 1. Added legacy specific Logout link that redirects to Login page
    1. This was done to avoid complexity of supporting antiforgery tokens from the legacy app
    1. Login page on load executes script that posts to Logout page.  
