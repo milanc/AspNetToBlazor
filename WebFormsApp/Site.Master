@@ -18,7 +18,19 @@
         document.blazorBase = "<%:BlazorBase %>";
     </script>
     <script src="/_content/Radzen.Blazor/Radzen.Blazor.js" defer></script>
-    <script src="/blazor.webassembly-asp.js" defer></script>
+    <script src="/blazor.webassembly-asp.js" autostart="false"></script>
+    <script>
+        Blazor.start({
+            loadBootResource: function (type, name, defaultUri, integrity) {
+                console.log(defaultUri)
+                if (name == 'dotnet.js') {
+                    return "/dotnet-asp.js"
+                } else {
+                    return `/_framework/${name}`;
+                }
+            }
+        });
+    </script>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
