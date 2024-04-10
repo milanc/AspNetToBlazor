@@ -36,7 +36,7 @@
     </asp:PlaceHolder>
 
     <link rel="stylesheet" href="BlazorWebApp.styles.css">
-    <link rel="stylesheet" href="_content/Radzen.Blazor/css/standard-base.css">
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/material-base.css">
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <script>
